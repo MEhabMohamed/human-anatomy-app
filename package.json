@@ -1,0 +1,11 @@
+{
+  "name": "human-anatomy-app",
+  "version": "1.0.0",
+  "description": "Interactive 3D Human Anatomy sculpture web app using Three.js.",
+  "main": "index.html",
+  "scripts": {
+    "dev": "npx sirv-cli . --port 3000 --cors --single"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}

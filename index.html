@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description"
+    content="Explore the human body in detail with this interactive, medical-grade 3D Human Anatomy Sculpture app. Featuring high-fidelity skeletal, muscular, organ, nervous, cardiovascular, skin, and blood systems.">
+  <title>Anatoma3D - Holographic Human Anatomy Sculpture</title>
+
+  <!-- Premium Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet">
+
+  <!-- CSS Stylesheet -->
+  <link rel="stylesheet" href="style.css?v=7">
+</head>
+
+<body>
+
+  <!-- Dark Starry/Mesh Background Overlay -->
+  <div class="bg-stars"></div>
+  <div class="bg-glow"></div>
+
+  <!-- Main App Layout Grid -->
+  <div class="app-container">
+
+    <!-- TOP HEADER -->
+    <header class="app-header">
+      <div class="logo">
+        <span class="logo-icon">🫀</span>
+        <h1>ANATOMA<span class="logo-accent">3D</span></h1>
+        <span class="version-tag">v1.2.0-Holo</span>
+      </div>
+
+      <!-- Live Search Bar -->
+      <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="anatomy-search" placeholder="Search organs, bones, nerves..." autocomplete="off">
+        <button id="clear-search-btn" class="hidden">×</button>
+        <div id="search-results" class="search-results-panel hidden"></div>
+      </div>
+
+      <div class="header-status">
+        <div class="status-pulse"></div>
+        <span class="status-text">System Diagnostics: Active</span>
+      </div>
+    </header>
+
+    <!-- MAIN INTERACTIVE WRAPPER -->
+    <main class="app-workspace">
+
+      <!-- LEFT PANEL: Anatomical Directory Tree -->
+      <aside class="panel glass-panel left-panel">
+        <div class="panel-header">
+          <h2>DIRECTORY</h2>
+          <span class="panel-subtitle">Anatomy Hierarchy</span>
+        </div>
+        <div class="panel-content scrollable">
+          <div id="hierarchy-tree" class="tree-root">
+            <!-- Programmatically populated by app.js -->
+          </div>
+        </div>
+      </aside>
+
+      <!-- CENTER PANEL: 3D Viewport -->
+      <section class="viewport-panel">
+        <!-- Three.js Canvas Container -->
+        <div id="three-container" class="canvas-container"></div>
+
+        <!-- Viewport Controls & HUD Overlay -->
+        <div class="hud-overlay top-hud">
+          <div class="control-group gender-selector">
+            <button id="btn-male" class="hud-btn active" data-gender="male">
+              <span class="gender-icon">♂</span> Male Model
+            </button>
+            <button id="btn-female" class="hud-btn" data-gender="female">
+              <span class="gender-icon">♀</span> Female Model
+            </button>
+          </div>
+
+          <button id="btn-reset-view" class="hud-btn accent-btn" title="Reset Camera Direction">
+            🔄 Reset Camera
+          </button>
+        </div>
+
+        <div class="hud-overlay bottom-hud">
+          <!-- Explode View Slider -->
+          <div class="explode-control-wrapper glass-panel">
+            <div class="explode-header">
+              <label for="explode-slider">🔬 Explode Structure</label>
+              <span id="explode-value">0%</span>
+            </div>
+            <input type="range" id="explode-slider" min="0" max="100" value="0" class="neon-slider">
+          </div>
+
+          <!-- System Visibility Quick Filters -->
+          <div class="system-filters glass-panel">
+            <span class="filters-label">Layers:</span>
+            <div class="filter-toggles-grid">
+              <label class="toggle-control skeletal-toggle">
+                <input type="checkbox" id="toggle-skeletal" checked>
+                <span class="toggle-indicator"></span>
+                <span class="toggle-label">🦴 Skeletal</span>
+              </label>
+              <label class="toggle-control nervous-toggle">
+                <input type="checkbox" id="toggle-nervous" checked>
+                <span class="toggle-indicator"></span>
+                <span class="toggle-label">🧠 Nervous</span>
+              </label>
+              <label class="toggle-control cardiovascular-toggle">
+                <input type="checkbox" id="toggle-cardiovascular" checked>
+                <span class="toggle-indicator"></span>
+                <span class="toggle-label">❤️ Cardio</span>
+              </label>
+              <label class="toggle-control digestive-toggle">
+                <input type="checkbox" id="toggle-digestive" checked>
+                <span class="toggle-indicator"></span>
+                <span class="toggle-label">🥗 Organs</span>
+              </label>
+              <label class="toggle-control reproductive-toggle">
+                <input type="checkbox" id="toggle-reproductive" checked>
+                <span class="toggle-indicator"></span>
+                <span class="toggle-label">🧬 Repro</span>
+              </label>
+              <label class="toggle-control skin-toggle">
+                <input type="checkbox" id="toggle-skin" checked>
+                <span class="toggle-indicator"></span>
+                <span class="toggle-label">🩹 Skin</span>
+              </label>
+              <label class="toggle-control blood-toggle">
+                <input type="checkbox" id="toggle-blood" checked>
+                <span class="toggle-indicator"></span>
+                <span class="toggle-label">🩸 Blood</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3D Navigation Instructions HUD -->
+        <div class="hud-instructions">
+          <span>🖱 Left Drag to Rotate</span>
+          <span class="separator">|</span>
+          <span>🖱 Right Drag to Pan</span>
+          <span class="separator">|</span>
+          <span>⚙ Scroll to Zoom</span>
+          <span class="separator">|</span>
+          <span>👆 Click parts to inspect</span>
+        </div>
+      </section>
+
+      <!-- RIGHT PANEL: Medical Info Drawer -->
+      <aside class="panel glass-panel right-panel closed" id="info-drawer">
+        <!-- Close button for drawer -->
+        <button id="close-drawer-btn" class="close-btn">&rarr;</button>
+
+        <div class="panel-header">
+          <div class="breadcrumbs" id="info-breadcrumbs">
+            <!-- e.g. Skeletal > Skull > Cranium -->
+          </div>
+          <h2 id="info-title">Select a Part</h2>
+          <span class="system-badge" id="info-system-badge">System</span>
+        </div>
+
+        <div class="panel-content scrollable">
+          <div id="info-empty-state" class="empty-state">
+            <div class="empty-state-icon">📡</div>
+            <p>Click any anatomical structure in the 3D model or browse the Directory to inspect details.</p>
+          </div>
+
+          <div id="info-body-content" class="info-content hidden">
+            <!-- Medical Facts Sections -->
+            <div class="info-section">
+              <h3>Description</h3>
+              <p id="info-description" class="medical-text">No description available.</p>
+            </div>
+
+            <!-- Famous Infections & Cures -->
+            <div class="info-section" id="info-infections-section">
+              <h3>🦠 Infections, Tumors &amp; Diseases</h3>
+              <div class="infections-list" id="info-infections-list">
+                <!-- Programmatically generated accordions -->
+              </div>
+            </div>
+
+            <!-- Sub-parts List if available -->
+            <div class="info-section" id="info-children-section">
+              <h3>Substructures</h3>
+              <div class="substructures-list" id="info-children-list">
+                <!-- Programmatically generated buttons of sub-parts -->
+              </div>
+            </div>
+
+            <!-- External Web Directory Redirect Button -->
+            <div class="redirect-btn-wrapper">
+              <button id="info-redirect-btn" class="redirect-btn">
+                📖 Web Directory Details &rarr;
+              </button>
+            </div>
+
+            <!-- Scientific Resource Verification Source Badge -->
+            <div class="source-verification">
+              <span class="source-icon">🛡️</span>
+              <div class="source-details">
+                <span class="source-label">Medical Reference Verified</span>
+                <span class="source-author">OpenStax Anatomy / NIH BioGrid database</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+    </main>
+  </div>
+
+  <!-- THREE.JS CORE & UTILS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+  <!-- APP SOURCE CODES -->
+  <script src="js/database.js?v=7"></script>
+  <script src="js/geometry-builder.js?v=7"></script>
+  <script src="js/three-scene.js?v=7"></script>
+  <script src="js/app.js?v=7"></script>
+</body>
+
+</html>
