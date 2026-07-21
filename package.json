@@ -4,7 +4,8 @@
   "description": "Interactive 3D Human Anatomy sculpture web app using Three.js.",
   "main": "index.html",
   "scripts": {
-    "dev": "npx sirv-cli . --port 3000 --cors --single"
+    "dev": "npx sirv-cli . --port 3000 --cors --single",
+    "deploy": "gcloud storage rsync . gs://human-anatomy-app-mo-91823 --recursive --exclude=\".*\\.git.*,.*node_modules.*,package\\.json,package-lock\\.json,\\.gitignore\""
   },
   "dependencies": {},
   "devDependencies": {}
