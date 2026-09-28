@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "dev": "npx sirv-cli . --port 3000 --cors --single",
-    "deploy": "gcloud storage rsync . gs://human-anatomy-app-mo-91823 --recursive --exclude=\".*\\.git.*,.*node_modules.*,package\\.json,package-lock\\.json,\\.gitignore\""
+    "deploy": "gcloud storage rsync . gs://human-anatomy-app-mo-91823 --recursive --exclude=\".*\\.git.*,.*node_modules.*,package\\.json,package-lock\\.json,\\.gitignore,README\\.md\""
   },
   "dependencies": {},
   "devDependencies": {}
