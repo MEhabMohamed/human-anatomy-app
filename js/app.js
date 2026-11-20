@@ -60,7 +60,11 @@ class AnatomyApp {
       
       const titleSpan = document.createElement('span');
       titleSpan.className = 'tree-system-title';
-      titleSpan.innerHTML = `<span class="sys-icon">${system.icon}</span> ${system.name}`;
+      const iconSpan = document.createElement('span');
+      iconSpan.className = 'sys-icon';
+      iconSpan.textContent = system.icon || '';
+      titleSpan.appendChild(iconSpan);
+      titleSpan.appendChild(document.createTextNode(` ${system.name || ''}`));
       
       const arrowSpan = document.createElement('span');
       arrowSpan.className = 'tree-system-arrow';
